@@ -1,7 +1,7 @@
 import { IsNumber, IsString, MinLength } from "class-validator"
 
 
-export class CreateUserDto {
+export class UpdateUserDto {
   @IsString()
   @MinLength(1)
   name: string
