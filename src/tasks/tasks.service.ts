@@ -3,11 +3,16 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 
 export class TasksService {
+
+  private tasks = []
+
   getTasks() {
-    return ["Task 1", "Task 2", "Task 3"]
+    return this.tasks
   }
-  createTask() {
-    return "Creando tarea"
+  createTask(task: any) {
+    console.log(task);
+    this.tasks.push(task)
+    return task
   }
   updateTask() {
     return "Atualizando tarea"
