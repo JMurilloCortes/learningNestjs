@@ -1,4 +1,5 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, HttpCode, NotFoundException } from "@nestjs/common";
+import { CreateTaskDto } from "./dto/create-task.dto";
 
 @Injectable()
 
@@ -12,11 +13,13 @@ export class TasksService {
   getTask(id: number) {
     const taskFound = this.tasks.find(task => task.id === id)
     if(!taskFound){
-      return "no se enontro la tarea especificada"
+      // return "No se enontro la tarea especificada"
+      // throw new Error("Tarea no encontrada")
+      return new NotFoundException(`La tares con id ${id} no fue enontrada`)
     }return taskFound
 
   }
-  createTask(task: any) {
+  createTask(task: CreateTaskDto) {
     console.log(task);
     this.tasks.push({
       ...task,
