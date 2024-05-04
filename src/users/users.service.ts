@@ -1,47 +1,31 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { PrismaService } from 'src/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 
 export class UsersService {
 
-  private users = []
+  constructor(private prisma: PrismaService){}
 
   getUsers(){
-    return this.users
+    return this.prisma.usuario.findMany();
   }
-  getUser(id: number){
-    const userFound = this.users.find(user => user.id === id)
-    if(!userFound){
-      return new NotFoundException(`El usuario con id ${id} no fue encontrado`)
-    } return userFound
-  }
+
+  // getUser(id: string){
+  //   return this.prisma.usuario.findUnique(id);
+  // }
+  
   createUser(user: CreateUserDto){
-    console.log(user);
-    this.users.push({
-      ...user,
-      id: this.users.length + 1,
-    })    
-    return user
+    return this.prisma.usuario.create({data:user})
   }
-  updateUser(id: number, user: UpdateUserDto){
-    const userIndex = this.users.findIndex(user => user.id === id);
-    console.log(userIndex);
-    
 
-    if(userIndex === -1){
-      throw new NotFoundException(`El usuario con id ${id} no fue encontrado`);
-    }
-
-    const updatedUser = {
-      ...this.users[userIndex],
-      ...user,
-    };
-
-    this.users[userIndex] = updatedUser;
-    return updatedUser;
-}
-
+  updateUser(id: string, user: UpdateUserDto) {
+    return this.prisma.usuario.update({
+      where: { id }, // Proporciona la condición para seleccionar el usuario por su ID
+      data: user,   // Proporciona los datos para actualizar
+    });
+  }
 
 }
