@@ -20,6 +20,7 @@ export class UsersController {
   @Post()
   createUser(@Body() user: CreateUserDto){
     return this.usersService.createUser(user);
+    
   }
   @Put("/:id")
   updateUser(@Param("id") id: number, @Body() user: UpdateUserDto){
